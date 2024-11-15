@@ -1,0 +1,15 @@
+stages:
+  - test
+
+playwright-tests:
+  stage: test
+  image: mcr.microsoft.com/playwright:v1.48.2-jammy
+  script:
+    # Install project dependencies
+    - npm install
+    
+    # Install necessary browsers (like Chrome) for Playwright
+    - npx playwright install chrome
+    
+    # Run the tests (ensure this command exists in your package.json)
+    - npm run test:chrome
