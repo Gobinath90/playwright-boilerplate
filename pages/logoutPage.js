@@ -13,7 +13,6 @@ class LogoutPage extends BasePage {
 	}
 
 	async logout() {
-		await this.waitAndClick(sidelogoutButton, "Side Logout Menu")
 		await this.waitAndClick(logoutButton, "Logout Button")
 	}
 

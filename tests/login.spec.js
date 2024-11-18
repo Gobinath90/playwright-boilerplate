@@ -3,12 +3,12 @@ import { expect } from '@playwright/test';
 import fs from 'fs'
 const testData = JSON.parse(fs.readFileSync(`./data/users.json`, `utf-8`))
 import { baseUrl, title } from '../config'
-import { LoginPage, LogoutPage } from '../pages';
+import { LoginPage } from '../pages';
 
 const AUTHOR_NAME = 'John Doe';
 
 test.describe('Admin user login and logout flow verification', () => {
-  let loginPage, logoutPage;
+  let loginPage;
 
   // Log the author name at the beginning of the test suite
   test.beforeAll(async () => {
@@ -17,7 +17,6 @@ test.describe('Admin user login and logout flow verification', () => {
 
   test.beforeEach(async ({ page }) => {
     loginPage = new LoginPage(page);
-    logoutPage = new LogoutPage(page);
     await loginPage.openApp();
   });
 
