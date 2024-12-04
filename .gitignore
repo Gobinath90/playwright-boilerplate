@@ -2,6 +2,8 @@
 .DS_Store
 /test-results/
 /allure-report/
+/allure-reports/
+/monocart-report/
 /allure-results/
 /playwright-report/
 /blob-report/

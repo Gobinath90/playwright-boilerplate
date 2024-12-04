@@ -35,6 +35,17 @@ class HomePage extends BasePage {
 		return await this.page.isVisible(adminLocator);
 	}
 
+	async checkCurrencyType() {
+		await this.page.waitForSelector("//div[@class='w-3/5 max-w-sm text-sm md:text-lg']//div[@class='grid grid-cols-2']/span[@class='text-gray-300 text-left min-w-fit']", { state: 'visible' });
+        const CurrencyType = await this.page.locator("//div[@class='w-3/5 max-w-sm text-sm md:text-lg']//div[@class='grid grid-cols-2']/span[@class='text-gray-300 text-left min-w-fit']").allTextContents();
+        return CurrencyType;
+    }
+
+	async checkCurrencyValue() {
+		await this.page.waitForSelector("(//span[contains(@class,'text-gray-300 text-left')]/following-sibling::span)", { state: 'visible' });
+        const CurrencyValue = await this.page.locator("(//span[contains(@class,'text-gray-300 text-left')]/following-sibling::span)").allTextContents();
+        return CurrencyValue;
+    }
 }
 
 export default HomePage;

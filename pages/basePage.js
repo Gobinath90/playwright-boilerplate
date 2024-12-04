@@ -37,10 +37,11 @@ class BasePage {
 		return await this.page.waitForLoadState('domcontentloaded')
 	}
 
-	async waitAndClick(selector, elementName) {
-		console.log(`Clicking on ${elementName}`)
-		await this.page.waitForSelector(selector, { state: 'visible' });
-		return await this.page.click(selector)
+	async waitAndClick(locator, label) {
+		const element = this.page.locator(locator);
+		await this.waitForElementToBeVisible(element);
+        console.log(`Clicking on ${label}`);
+        await element.click();
 	}
 
 	async waitAndHardClick(selector) {
@@ -93,6 +94,14 @@ class BasePage {
 		console.log(`Verifying ${attribute} of ${selector}: expected ${value}, got ${attrValue.trim()}`)
 		return expect(attrValue.trim()).toBe(value)
 	}
+
+	async getAllElementsFromList(selector) {
+		const rows = await this.page.locator(selector);
+		const allItems = await rows.allTextContents();
+		console.log(`All elements: ${allItems}`);
+		return allItems;
+	}
+
 
 	async getFirstElementFromTheList(selector) {
 		const rows = await this.page.locator(selector)
@@ -173,6 +182,47 @@ class BasePage {
 			return isChecked
 		}
 	}
+
+	async waitForElementToBeVisible(element) {
+		//console.log(`Waiting for element to be visible: ${element}`);
+		await element.waitFor({ state: 'visible' });
+	}
+
+	async getTextContent(locator, label) {
+        const element = this.page.locator(locator);
+        const text = await element.textContent();
+		console.log(`Text of ${label}:`, text.trim());
+        return text.trim();
+    }
+
+	async waitAndHover(locator) {
+        const element = this.page.locator(locator);
+        await element.waitFor({ state: 'visible' });
+        await element.hover();
+    }
+
+	async hoverAndGetTextContent(locator, textLocator, text) {
+		const element = this.page.locator(locator);
+		await this.waitForElementToBeVisible(element);
+		await element.hover();
+		return await this.getTextContent(textLocator);
+    }
+
+	async decipherPassword(){
+		const key ='SmartWork@1234';
+		// ENCRYPT
+		const cipher = CryptoJS.AES.encrypt('SmartWork@1234', key);
+		console.log(cipher.toString());
+
+		// DECRYPT
+		const bytes = CryptoJS.AES.decrypt(cipher.toString(), key).toString(CryptoJS.enc.Utf8);
+		console.log(originalText);
+	}
+
+
+
+
+
 }
 export default BasePage
 

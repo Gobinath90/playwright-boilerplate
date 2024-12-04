@@ -12,9 +12,11 @@
     "html-report": "npx playwright test --reporter=html && npx playwright show-report",
     "test:allure": "playwright test --reporter=allure-playwright",
     "allure:clean": "rimraf allure-results",
-    "allure-generate": "allure generate ./allure-results --clean -o allure-report",
-    "allure:report": "npm run allure-generate && allure serve",
-    "allure:chrome": "npm run allure:clean && npm run test:chrome && npm run allure-generate && npm run allure:report"
+    "allure-generate": "allure generate ./allure-results --clean -o allure-reports",
+    "allure:reports": "npm run allure-generate && allure serve",
+    "allure:chrome": "npm run allure:clean && npm run test:chrome && npm run allure-generate && npm run allure:reports",
+    "update:playwright": "playwright install --with-deps",
+    "allure:html": "allure generate --single-file ./allure-results"
   },
   "keywords": [
     "Plawright",
@@ -31,6 +33,7 @@
     "allure-playwright": "^3.0.6",
     "dotenv": "^16.4.5",
     "fs": "^0.0.1-security",
+    "monocart-reporter": "^2.9.11",
     "prettier": "^3.3.3",
     "rimraf": "^6.0.1"
   }
