@@ -2,20 +2,26 @@ import test from '../testFixtures/fixture';
 import { expect } from '@playwright/test';
 import fs from 'fs';
 import { LoginPage, LogoutPage, HomePage, SideMenuPage, AccountPage } from '../pages';
+
 const testData = JSON.parse(fs.readFileSync(`./data/users.json`, `utf-8`));
+// Utility to initialize page objects
+const initializePages = (page) => {
+    return {
+        loginPage: new LoginPage(page),
+        logoutPage: new LogoutPage(page),
+        homePage: new HomePage(page),
+        sideMenuPage: new SideMenuPage(page),
+        accountPage: new AccountPage(page),
+    };
+};
 
 test.describe('Home Screen Testcase Verification', () => {
     let loginPage, logoutPage, homePage, sideMenuPage;
 
     test.beforeEach(async ({ page }) => {
-        loginPage = new LoginPage(page);
-        logoutPage = new LogoutPage(page);
-        homePage = new HomePage(page);
-        sideMenuPage = new SideMenuPage(page);
-        await test.step('Open the application', async () => {
+        ({ loginPage, logoutPage, homePage, sideMenuPage } = initializePages(page));
+        await test.step('Open the application and login with admin credentials', async () => {
             await loginPage.openApp();
-        });
-        await test.step('Login with admin credentials', async () => {
             await loginPage.loginCredentials(testData.admin.email, testData.admin.password);
         });
     });
@@ -82,19 +88,12 @@ test.describe('Account Screen Testcase Verification', () => {
     let loginPage, logoutPage, homePage, sideMenuPage, accountPage;
 
     test.beforeEach(async ({ page }) => {
-        loginPage = new LoginPage(page);
-        logoutPage = new LogoutPage(page);
-        homePage = new HomePage(page);
-        sideMenuPage = new SideMenuPage(page);
-        accountPage = new AccountPage(page);
-        await test.step('Open the application', async () => {
+        ({ loginPage, logoutPage, homePage, sideMenuPage, accountPage } = initializePages(page));
+
+        await test.step('Open the application, login, and navigate to Account page', async () => {
             await loginPage.openApp();
-        });
-        await test.step('Login with admin credentials', async () => {
             await loginPage.loginCredentials(testData.admin.email, testData.admin.password);
-        });
-        await test.step('Navigate to Account page using side menu', async () => {
-            await sideMenuPage.sideMenu("Account");
+            await sideMenuPage.sideMenu('Account');
             await page.waitForTimeout(2000);
         });
     });
